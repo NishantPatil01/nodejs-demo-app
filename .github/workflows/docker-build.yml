@@ -19,6 +19,14 @@ jobs:
       - name: Build Docker Image
         run: docker build -t nishantpatil01/nodejs-demo-app:latest .
 
+      - name: Debug Secrets
+        run: |
+          echo "Username: $DOCKERHUB_USERNAME"
+          echo "Token: $DOCKERHUB_TOKEN"
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Log in to DockerHub using Access Token
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
