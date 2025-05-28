@@ -20,7 +20,8 @@ jobs:
         run: docker build -t nishantpatil01/nodejs-demo-app .
           
       - name: Debug Secrets
-        run: echo "Username: ${{ secrets.DOCKERHUB_USERNAME }}" && echo "Token: ${{ secrets.DOCKERHUB_TOKEN }}" 
+        run:|
+          echo "Username: ${{ secrets.DOCKERHUB_USERNAME }}" && echo "Token: ${{ secrets.DOCKERHUB_TOKEN }}" 
 
       - name: Log in to DockerHub
         run: |
