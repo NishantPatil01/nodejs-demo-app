@@ -21,14 +21,12 @@ jobs:
 
       - name: Debug Secrets
         run: |
-          echo "Username: $DOCKERHUB_USERNAME"
-          echo "Token: $DOCKERHUB_TOKEN"
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          echo "Username: ${{ secrets.DOCKERHUB_USERNAME }}"
+          echo "Token: ${{ secrets.DOCKERHUB_TOKEN }}"
 
       - name: Log in to DockerHub using Access Token
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Push Image to DockerHub
         run: docker push nishantpatil01/nodejs-demo-app
