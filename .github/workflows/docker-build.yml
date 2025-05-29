@@ -23,7 +23,7 @@ jobs:
       - name: Run Tests
         run: npm test || echo "Skipping tests - No test files found"
 
-      - name: Log in to DockerHub
+      - name: Login to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker image
