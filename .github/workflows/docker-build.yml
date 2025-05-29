@@ -1,33 +1,41 @@
-name: Build and Push Docker Image
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main  # Triggers pipeline when pushing to main branch
+      - main
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Docker
-        run: docker --version
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ nishantpatil01 }}" --password-stdin
+      
       - name: Build Docker Image
-        run: docker build -t nishantpatil01/nodejs-demo-app:latest .
+        run: docker build -t <dockerhub-username>/<image-name>:latest .
 
-      - name: Debug Secrets
-        run: |
-          echo "Username: ${{ secrets.DOCKERHUB_USERNAME }}"
-          echo "Token: ${{ secrets.DOCKERHUB_TOKEN }}"
-
-      - name: Log in to DockerHub using Access Token
-        run: |
-          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-
-      - name: Push Image to DockerHub
-        run: docker push nishantpatil01/nodejs-demo-app
+      - name: Push Docker Image
+        run: docker push <dockerhub-username>/<image-name>:latest
 
